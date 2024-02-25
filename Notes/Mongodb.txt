@@ -1,0 +1,1166 @@
+What is Mongodb odeJs Driver package 
+Driver package have the code which has ability to connect node.js with database
+npm i mongodb
+
+Import mongodb in project
+const {MongoClient} = require('mongodb'); // this is modern js syntax
+or you can use below both have the same meaning 
+const MongoClient = require('mongodb').MongoClient;
+
+
+It Is A NodeJs Module That Lets You Manipulate,Create,Connect To A Mongo Database.
+
+Now provide your mongodb path to your application
+const url = 'mongodb://localhost:27017' 
+this port url will be same for all the system if you are connecting with local mongodb some time we connect with the online cloud mongodb then this then this is reuqired to give
+
+Now we have to pass this url to MongoClient so that mongodb get our mongodb path
+const client = new MongoClient(url);
+
+function getData(){
+
+    let result = client.connect(); // now this will connect with client
+    // but above connect method return promise(sometimes it took time to connect client with mongodb) hence use await and await can't be use directly just make function asyn 
+
+    // Now will provide our dabase of which we want to connect
+    let db = result.db('database_name'); // Provide now you database here
+    // Now in our database there can many collection so of which you want to connect
+
+    // below statement can take bit time to fetch the collection and might can return the promise hence use await this will automatically handle the promise
+    let collection = await db.Collection('collecction_name');
+
+    // Now print your collection data
+    console.log(collecction.find({}).toArray()); // toArray() gives in good formate otherwise lot of other data we will get but this will only give the data which is present in collecction
+    
+}
+
+
+// call the function Now
+
+getData();
+
+
+👉 Interview ques -> Can we connect two database along
+Ans -> Yes we can definetly connect just create one more db and collecction like above
+
+👉 Workflow -> In every development domain we create seperate database file connection file and we use this file whenever we have to use databases and connect with mongodb because mongodb connection code takes lot of time which increase complexity of the code hence always use the seperate connection file, we perform different operations like above we fetch the data by connecting project with db but for all different operation like rest delete, update and insert we don't execute the above connection line code again again because of complexity
+
+
+👉 collection.find({name: 'Mohammad AMeen'})
+This will only give that document data having name 'Mohammad Ameen'
+
+
+👉 Now we will keep the connection statement in separate file
+Note - promise can be handle by using Aync and Promise, we will see the both methods 
+
+What is Promise?
+Javascript  code is the asyn asyn code doesn't wait for the other statement just keep executing Javascript statement very fast and if in these statement if any statement taking bit time then this craetes problem, statement will be execute simultaneously is any taking time and when the whole statement will produce there result then then() mehtod will be run, Sometimes code statement can be very heavy and which might take some time in order to generate the result but the problem is we want to use the result untill we our statement are full executet and give the result and now we can use that result and process our operation .then(){ this method only will be execute when we will get result untill this method will wait for the result}
+
+See below code
+
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+
+// Below getConnection will be common function we have to now just write the crud Operation code instead of over over write below code
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+// Performing read operation below
+// 👉 Handling promise by using .then 
+getConnection().then((resp) => {
+
+    resp.then((resp) =>{
+
+        // Below toArray method also gives the promise hence we handle that primise as well by using the then method
+        resp.find().toArray().then((data)=>{
+            console.log(data);
+        });
+
+    })
+
+})
+
+
+// 👉 Handling promise by using await this is easiest method
+
+const main () asyn => {
+
+    const data = await getConnection(); // getConnection() promise will get handle automatically
+    data = await data.find().toArray();  // toArray() promise will get handle automatically
+    console.warn();
+
+    // This is so simple and modern syntax of JS 😎
+
+}
+
+// call main
+main();
+
+// 👉 Now keep our connection file in seperate file and will import in where we want to use
+
+connection.js file 
+
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+index.js file
+
+By using promise
+getConnection().then((resp) => {
+
+    getConnection().then((resp) =>{
+
+        resp.find().toArray().then((data)=>{
+            console.log(data);
+        });
+
+    })
+
+})
+
+
+or By Using await
+
+const getConnection = require('./connection');
+
+const main = async () => {
+
+    let data = await getConnection();
+    data = await data.find().toArray();
+    console.log(data);
+
+}
+
+main();
+
+
+
+👉 Insertion in the DB
+
+
+⭐ Inserting single data
+
+connection.js file 
+
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+insert.js file
+
+const getConnection = require('./connection');
+
+const main = async () => {
+
+    let data = await getConnection();
+    const result = await data.insertOne({name: 'Pora 2i', age: 1111});
+    console.log(result);
+
+    result.acknowledged ? console.log('Done'):console.log('Failed in insertion'); // acknowledged either true or false
+
+}
+
+main();
+
+
+⭐ Inserting multiple data
+
+connection.js file 
+
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+insert.js file
+
+const getConnection = require('./connection');
+
+const main = async () => {
+
+    let data = await getConnection();
+    const result = await data.insertOne([{name: 'Pora 2i', age: 1111},{name: 'Pora 2i', age: 1111},
+    {name: 'Pora 2i', age: 1111},
+    {name: 'Pora 2i', age: 1111}]);
+    console.log(result);
+
+    result.acknowledged ? console.log('Done'):console.log('Failed in insertion'); // acknowledged either true or false for confirmation
+
+}
+
+main();
+
+👉 Update data in the DB
+
+
+connection.js 
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+update.js file
+const getConnection = require('./connection');
+
+const main = async () =>{
+
+    let data = await getConnection();
+    const result = await data.updateOne({name: 'Pora 2i'}, {$set:{name: 'Pora Pari', age: 21}});    
+    console.log(result);
+
+    // acknowledged: true, // is updated or not 
+    // modifiedCount: 0, // how many items updated in collection
+    // upsertedId: null, 
+    // upsertedCount: 0, // If we dont have record then insert there
+    // matchedCount: 0 // how many values are same with our give value
+    // updateOne -> This updates the first occured value
+    // updateMany -> This updates the whole collection same value
+    // update -> This will also update the all learn diff in update and updateMany
+    Ans - diff -> The difference is that update() by default, modifies only one document matching the specified filter. However, you can make it modify all the documents by adding the modifier {multi: true} . updateMany on the other hand, modifies all the documents matching a specified filter. Please confirm it when learn mongodb
+}
+
+main();
+
+
+
+👉 Delete in Mongodb
+
+connection.js file
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+delete.js file
+
+const getConnection = require('./connection');
+
+const main = async () =>{
+
+    let data = await getConnection();
+    const result = await data.deleteOne({name: 'Pora 2i'});   
+    console.log(result);
+
+    // deleteOne -> This deletes the first occured value
+    // deleteMany -> This deletes the whole collection same value
+    // acknowledged: true, deletedCount: 0 
+
+    // Interview question -> If in our db value is not present then how you will know that data delete or not.
+    Ans -> We will took help of deletedCount this will return us count of deleted element and this helps beacuse acknowledged always gives true hence take help of this.
+
+}
+
+main();
+
+
+👉 First Dynamic API  
+there are main 4 type of Api, get api, put api, post api and delete api also there exist other api such as search api etc.
+PUT -> Use to update data in db
+GET -> Use to fetch data from db
+DELETE -> Use to delete data in db
+POST -> Use to insert data in db
+
+
+⭐ Get Api 
+Fetching data from the mongodb database
+
+connection.js file // Basically we will get collecction till path from here
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+api.js file // test your API on Thunder client
+const express = require('express');
+const mongoConnection = require('./connection');
+const app = express();
+
+// We are going to use get Api 
+// req -> This will help when we fetch/get data from the db in api
+// resp -> This will help When our api will send response to node.js server
+app.get('/', async (req,resp) => {
+
+    let data = await mongoConnection();
+    data = await data.find().toArray();
+    // console.log(data);
+    resp.send(data);
+
+})
+
+app.listen(8989);
+
+Interview question -> Can we pass the body from the get api?
+Ans -> We cannot pass the body from the get api, but we can pass the query params from the local host url
+
+
+⭐ Post Api or post method
+By using this api we can insert data i db and we can fetch data through get api if we want
+we can keep same url of post and get api, when we call get method then get api will be run and when we call post method then post method will be run
+In post api when we send data to body then we always sends JSON data from raw/json in body
+
+
+connection.js file
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+api.js file
+const express = require('express');
+const mongoConnection = require('./connection');
+const app = express();
+
+// Below line when we get data from postman through api then we below use method statement, we convert data so that data get available
+app.use(express.json());
+
+// with just below are sending data from the body of thunder client and we are getting data in console hence we are able to took data in node.js from the thunder client or postman
+app.post('/',(req,resp) => {
+
+    console.log(req.body);
+    resp.send(req.body); // See this response in Thunder client
+
+});
+
+app.listen(8980);
+
+
+updated api.js file 
+
+const express = require('express');
+const mongoConnection = require('./connection');
+const app = express();
+
+// Below line when we get data from postman through api then we below use method statement, we convert data so that data get available
+app.use(express.json());
+
+app.post('/', async (req,resp) => {
+
+    let connect = await mongoConnection();
+    let result = await connect.insertMany(req.body);
+    resp.send(result);
+
+});
+
+
+app.listen(9007);
+
+body passed from thunder client
+[{
+    "name":"Mohammad Ameen",
+    "age": "23",
+    "heart": "insert"
+  },
+  {
+    "name":"Mohammad Ameen",
+    "age": "23",
+    "heart": "insert"
+  },
+  {
+    "name":"Mohammad Ameen",
+    "age": "23",
+    "heart": "insert"
+  }
+  
+  ]
+
+
+  Interview question -> Why we didn't use body.parser instead of express.json().
+  Ans -> Before 4.6 express version we use body parser but now after 4.6 we use express.json() to get body from request and after that use we parse body by using req.body
+
+
+
+👉 Put API
+this api is used for update the data in dabase 
+
+interview question -> Can we update data in db by using the post api?
+Ans - Yes we can but this method won't be standard method of update data in db using the post api.
+
+connect.js
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+api.js
+const express = require('express');
+const mongoConnection = require('./connection');
+const app = express();
+
+app.use(express.json());
+
+app.put('/', async (req,resp) => {
+
+    let connect = await mongoConnection();
+    let result = await connect.updateOne({name:'Updated Name', age:"50"}, {$set:req.body});
+    resp.send("Done");
+});
+
+app.listen(9012);
+
+Body from Thunder client
+{
+    "class":"Btech - 4th year" 
+    // Updating only class which document have name:'Updated Name'and age:"50"
+}
+  
+Qestion - How can we take name as dynamic as req.body
+Ans - just use below 
+updateOne({req.body.name}, {$set:req.body}); // Now name will be come from the body hence it become dynamic now
+
+Question - Now problem with above is if you want to update the name then how you will do that because you only want to update name on the basis of name ?
+Ans - We will pass name from the url parameter
+
+see example below of above problem
+
+connection.js
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+api.js
+const express = require('express');
+const mongoConnection = require('./connection');
+const app = express();
+
+app.use(express.json());
+
+app.put("/:name", async (req,resp) => {
+
+    let connect = await mongoConnection();
+    let result = await connect.updateOne({name: req.params.name}, {$set:req.body});
+
+    resp.send({name : "Done"});
+});
+
+
+app.listen(9016);
+
+
+Thunder client url
+http://localhost:9016/Hello World
+
+Thunder client body
+{
+    "name":"love or lust" // "Hello World" now become the "Love or Lust"
+}
+
+
+👉 Delete API
+We will delete data in database from this api
+You cannot delete same as connect.updateOne({name: req.params.name}, {$set:req.body}); this code first you have to give _id and this id is also object id you will see the id in mongodb hence this id is object id hence make instace of object id, now import mongodb module and make use of it like new mongodb.ObjectId(_id: req.params.id) now done our task. 😎
+
+connection.js file
+const {MongoClient} = require('mongodb');
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+const revision = 'revision';
+
+async function getConnection(){
+
+    let result = await client.connect();
+    let db = result.db(revision);
+    let connection = db.collection('mongo_revise');
+    return connection;
+    
+}
+
+module.exports = getConnection;
+
+api.js file
+const express = require('express');
+const mongoConnection = require('./connection');
+const app = express();
+
+app.use(express.json());
+
+
+const mongodb = require('mongodb')
+app.delete("/:id", async (req,resp) => {
+
+    let connect = await mongoConnection();
+    let result = await connect.deleteOne({_id: new mongodb.ObjectId(req.params.id)});
+    resp.send({result});
+});
+
+
+app.listen(9020);
+
+
+Thunder client url 
+http://localhost:9020/64aa5d3919c23a6f278a1108
+
+Thunder client response
+{
+    "result": {
+      "acknowledged": true,
+      "deletedCount": 1
+    }
+  }
+
+
+
+👉 Mongoose 
+It is a npm package which connects NodeJs with Mongodb,
+we were using the official mongodb package which is also doing the same thing but now we will use mongoose because mongodb had few limitations, developers who develop mongodb worked on that more and add more functionality in it and release new package called mongoose, this package provides addtional feautures.
+What are addtional things in mongoose?
+In mongodb the problem was there is no way to create model/schema which now is in mongoose,
+in mongoose we can set the attributes which will only our mongodb database will save addtional attributes in mongodb package gets inserted in the database hence this was the problem which is resolve by the mongoose and now we can craete a very good structure.
+also we can set validation only i.e in this attribute only string values should be inserted in the database and not other type of.
+Hence in mongoose we can apply -> Validation, schemas, Field shouldn't be empty.
+Also we can check the field in the database and check its type but its a very time consuming process and takes lots of lines of code.
+
+Install mongoose -> npm i mongoose
+
+
+What is schemas?
+These validate the database fields and also type validation we apply, if we craeted only 4 field schema then our mongodb cannot let user to insert more than 4 field in the database also we can check the type of the value and compare with the schema field type if is same then data will be insert otherwise no data will be insert in the db.
+
+Mongodb has two parts 
+1) Schema -> All the fields in database are called schemas so that validation could be apply.
+2) Model -> This connects NodeJs with mongodb where our structure exist, model use those schemas and connect our nodejs with mongodb.
+
+If we are in root of project and there is present our inde.js file then we don't append file name with the nodmon because nodmon will automatically detect that index.js mai file
+
+index.js 
+
+🟢 Insert in DB
+const mongoose = require('mongoose');
+
+const main = async () => {
+
+    // e-com is our database name
+    const product = await mongoose.connect('mongodb://localhost:27017/e-com');
+
+    // name is field in collection
+    const ProductSchema = new mongoose.Schema({
+        name:String
+    })
+
+    // product is our collection name
+    const ProductModel =  mongoose.model('products', ProductSchema);
+
+    // Below statement only will insert name in the database if you want to insert price as well then add in schema price:Number
+    let data = new ProductModel({name: "Mongoose", price: 8989});
+    let result = await data.save();
+    console.log(result);
+
+}
+
+main();
+
+
+ 🟢 Update in DB
+
+const mongoose = require('mongoose');
+const product = mongoose.connect('mongodb://localhost:27017/e-com');
+
+const ProductSchema = new mongoose.Schema({
+        name:String,
+        price:Number
+});
+
+const updateInDb = async () => {
+
+    const ProductModel = await  mongoose.model('products', ProductSchema);
+    const update = await ProductModel.updateOne(
+        {name: "nnnn"},
+        {$set:{name: "Update Mongoose"}});
+
+} 
+
+updateInDb();
+
+
+ 🟢 Read in DB
+ const mongoose = require('mongoose');
+
+ const product = mongoose.connect('mongodb://localhost:27017/e-com');
+ const ProductSchema = new mongoose.Schema({
+         name:String,
+         price:Number
+ });
+ 
+ const findInDb = async () => {
+     const Product = await mongoose.model('products', ProductSchema);
+     const finding = await Product.find({}); 
+     // For specific product find({name: "Mongoose"})
+     console.log(finding);
+ }
+ 
+ findInDb();
+
+ 🟢 Delete in DB
+
+ const mongoose = require('mongoose');
+
+ const product = mongoose.connect('mongodb://localhost:27017/e-com');
+ const ProductSchema = new mongoose.Schema({
+         name:String,
+         price:Number
+ });
+  
+ const deleteInDb = async () => {
+ 
+     const ProductModel = await mongoose.model('products', ProductSchema);
+     const deletec = await ProductModel.deleteOne({name: "Update Mongoose"});
+     console.log(deletec.deletedCount);
+ 
+ }
+
+ deleteInDb();
+ 
+ 
+👉 API in mongoose
+Before we make API using mongodb npm package now we will create API using mongoose package with this package we will make project level API before we made normal API but now our API will be advance by adding the features like Model and Schema. These api would be bit complex then the mongodb package api
+
+These are common files for all the below API
+
+config.js 
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/e-com');
+
+product.js 
+const mongoose = require('mongoose');
+
+const ProductModel = new mongoose.Schema({
+    name:String,
+    price:Number
+});
+
+module.exports = mongoose.model('products', ProductModel);
+
+🟢 Post API
+
+const mongoose = require('mongoose');
+require('./config');
+const Product = require('./product');
+const express = require('express');
+
+const app = express();
+
+app.use(express.json()); // Content from body we get in the form of string and this will converte into the json 
+
+app.post("/postapi", async (req,resp) => {
+    let data = await Product(req.body);
+    let result = await data.save();
+    console.log(req.body);
+    resp.send(req.body);
+
+    // http://localhost:1112/postapi
+    /*
+        Thunder client body
+        {
+            "name":"Ayesha"
+        }
+    */
+});
+
+
+🟢 Get API
+
+const mongoose = require('mongoose');
+require('./config');
+const Product = require('./product');
+const express = require('express');
+
+const app = express();
+
+app.use(express.json()); // Content from body we get in the form of string and this will converte into the json 
+
+app.get("/getapi", async (req,resp) => {
+
+    let data = await Product.find();
+    resp.send(data);
+    console.log(data);
+
+    // http://localhost:1112/getapi
+} )
+
+
+app.listen(1112);
+
+🟢 Delete API
+const mongoose = require('mongoose');
+require('./config');
+const Product = require('./product');
+const express = require('express');
+
+const app = express();
+
+app.use(express.json()); // Content from body we get in the form of string and this will converte into the json 
+
+app.delete("/deleteapi/:_id", async (req,resp) => {
+
+
+    let det = await Product.deleteOne(req.params);
+    resp.send(det);
+
+    // http://localhost:1112/deleteapi/64abc0a79eeb959e250dc47c
+})
+
+app.listen(1112);
+
+
+🟢 PUT API
+
+const mongoose = require('mongoose');
+require('./config');
+const Product = require('./product');
+const express = require('express');
+
+const app = express();
+
+app.use(express.json()); // Content from body we get in the form of string and this will converte into the json 
+
+app.put('/updateapi', async (req,resp) => {
+
+    let data = await Product.updateOne(req.body, {$set:{name: "Hello Wello"}});
+    // or through parameters
+    // let data = await Product.updateOne(req.params, {$set:req.body});
+    resp.send(data);
+    console.log(data);
+
+    // http://localhost:1112/updateapi
+
+    // Thurder client body
+    /*
+    {
+        "name":"Ayesha"
+    }
+    */
+})
+
+
+app.listen(1112);
+
+
+
+👉 Interview Question on API
+How we should delete item either by passing id from body or url?
+We should always delete item by passing id from the url because our target is to only delete the item we don't need to check other things.
+
+How we should update item either by passing id from body or url?
+We can update item by using any method either from the url or from body
+its totally up to you.
+
+
+👉 Search API
+Search API can be craete by usinge either single field or multiple field.
+Search with the single field -> When we pick one field in collection and finds the item
+Search with the multiple field -> When we want to search on basis of mulptiple field search like name should be search, address should be search, category should be search etc. multiple fields would be search here.
+
+
+⭐ Single Field Search Demo 
+url ->  http://localhost:1113/search/n
+
+config.js file
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/e-com');
+
+product.js file
+const mongoose = require('mongoose');
+
+const ProductModel = new mongoose.Schema({
+    name:String,
+    price:Number
+});
+
+module.exports = mongoose.model('products', ProductModel);
+
+index.js file 
+const mongoose = require('mongoose');
+require('./config');
+const Product = require('./product');
+const express = require('express');
+
+const app = express();
+
+app.use(express.json()); 
+
+app.get('/search/:key', async (req,resp) => {
+
+    console.log(req.params.key);
+    let data = await Product.find({
+
+        // $or -> Data can in multiple fields
+        // The $or operator performs a logical OR operation on an array of one or more <expressions> and selects the documents that satisfy at least one of the <expressions> . The $or has the following syntax: { $or: [ { <expression1> }, { <expression2> }, ... , { <expressionN> } ] }
+
+        "$or": [
+            {   
+                // MongoDB provides the functionality to search a pattern in a string during a query by writing a regular expression. A regular expression is a generalized way to match patterns with sequences of characters
+                
+                "name":{$regex:req.params.key}
+            }
+        ]
+    });
+
+    resp.send(data);
+    console.log(data);
+
+})
+
+app.listen(1113);
+
+⭐ Mulitple Field Search Demo
+
+config.js
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/e-com');
+
+
+product.js 
+
+const mongoose = require('mongoose');
+
+const ProductModel = new mongoose.Schema({
+    name:String,
+    price:Number
+});
+
+module.exports = mongoose.model('products', ProductModel);
+
+index.js
+const mongoose = require('mongoose');
+require('./config');
+const Product = require('./product');
+const express = require('express');
+
+const app = express();
+
+app.use(express.json()); 
+
+app.get('/search/:key', async (req,resp) => {
+
+    console.log(req.params.key);
+    let data = await Product.find({
+
+        // $or -> Data can in multiple fields
+        // The $or operator performs a logical OR operation on an array of one or more <expressions> and selects the documents that satisfy at least one of the <expressions> . The $or has the following syntax: { $or: [ { <expression1> }, { <expression2> }, ... , { <expressionN> } ] }
+
+        "$or": [
+               
+                // MongoDB provides the functionality to search a pattern in a string during a query by writing a regular expression. A regular expression is a generalized way to match patterns with sequences of characters
+
+                // Now searching will be in both the fields 
+                {"name":{$regex:req.params.key}},
+                {"category": {$regex:req.params.key}}
+            
+        ]
+    });
+
+    resp.send(data);
+    console.log(data);
+
+})
+
+app.listen(1113);
+
+
+Interview question -> Can we search by using the post or put method?
+Ans -> Yes we can search, but we should know that post is for insert, put is for update. even we can use delete method.
+
+
+👉 Upload File in project directory folder
+
+multer npm package -> By using this we will upload file.
+
+
+const multer = require('multer');
+const express = require('express');
+
+const app = express();
+
+const upload = multer({
+
+    storage: multer.diskStorage({
+
+        // destination -> Where you want to upload
+        // Upload is our folder name in project directory
+        // cb -> its call back
+        destination: function(req,file,cb){
+            cb(null, "Upload");
+        },
+
+        // filename 
+        // fieldname -> name of the file given from body field of thunderclient
+        filename: function(req,file,cb){
+            // Date.now() -> 172827266617
+            cb(null, file.fieldname+"-"+Date.now()+ ".jpg");
+        }
+    })
+   
+   // single -> Uploading single file 
+   // user_file -> Field name and this user_file name should be match in code and body field of thunderclient
+}).single("user_file");
+
+app.post('/upload',upload,(req,resp) => {
+    resp.send('Uploaded Successfully!');
+});
+
+console.log("Done");
+app.listen(1111);
+
+makesure -> Provide field name in body file fielname and select one file 
+url -> http://www.localhost:1111/upload
+
+
+Interview -> Can we upload file without using the multer function?
+Ans -> Yes we can but we have to write alot of code and mostly developer use this simple multer package when they have to upload file.
+
+👉 OS Module 
+When we need of operating system information in our projects then we use this module, when we have to set the different different condition on the MAc, Window, Linux operation systems then we use this module.
+
+Now see its functions 
+
+const os = require('os');
+console.log(os.arch()) -> This will give us architecture eg. x64 bit
+
+console.log(os.freemem()/1024*1024*1024) -> converted bytes to kb then mb then gb by dividing 1024
+now this will return the free memory in gb
+
+
+console.log(os.totalmem()/(1024*1024*1024));
+// Total ram is 7.8 gb because system use few ram internally hence we don't get full 8 gb ram
+
+console.log(os.hostname());
+// This will give unique name of our system 
+
+console.log(os.platform());
+// win32
+
+console.log(os.userInfo());
+This gives us object, we can use this object to get user details 
+{
+    uid: -1,
+    gid: -1,
+    username: 'under',
+    homedir: 'C:\\Users\\under',
+    shell: null
+  }
+
+👉 Event and Event Emitter
+What is Event ?
+In every programming language have events, these event mostly use in HTML and Javascript, we have seen the onclick, onchange, html button etc and these event are basically sends signals in desi language.
+What is Event Emitter?
+That thing which generate that event is called as event Emitter. emit simply meaning is to generate something or produce something, html and javascript button is the emitter. but NodeJs doesn't have the buttons, in bode js we create button through api, button in html and javascript are the part of document, and node.js is executed on the server side, and we cannot create button in NodeJs but from API it is possible to make button.
+
+const express = require('express');
+// EventEmitter is a class hence we used first letter capital
+const EventEmitter = require("events");
+
+// We created EventEmitter class object
+const event = new EventEmitter();
+
+
+const app = express();
+
+let count = 0;
+
+// on(whenthisEventCall, thenExecuteThisCode)
+// on(Eventname, callBackFunction)
+event.on('homeCount', () =>{
+    count++;
+    console.log('Countig Home Hits', count);
+
+    /* Getting below output on every send from thunderclient
+        
+        Countig Home Hits 1
+        Countig Home Hits 2
+        Countig Home Hits 3
+        Countig Home Hits 4
+
+    */
+})
+
+app.get('/', (req,resp)=>{
+    resp.send('Home');
+    event.emit('homeCount'); // This will run the on homeCount method also will act as a button click
+});
+
+app.get('/about',(req,resp) => {
+    resp.send('About');
+    event.emit('homeCount');
+})
+
+app.get('/search', (req,resp)=>{
+    resp.send('Search');
+    event.emit('homeCount');
+})
+
+app.listen(7777);
+
+
+/*
+Conclusion -> In node we call event from emit method and we handle event from on method,
+
+we can use the onOnce method instead of on but onOnce only will be execute one time
+
+*/
+
+👉 REPL - Read Eval Print Loop
+This is tool of command line by using this we can run the javascript or node code in command line.
+
+When you run node command in CMD then you get enter in the REPL and you can run node/js code in repl
+
+Now run commands 
+2+2
+4
+a=3, b=5; a+b;
+8
+
+Now we are able to write just only one line command now we can write more than more commands by using the functions
+
+As you will add { open curly bracket then repl got understand that you want to write more lines of code.
+function test(){
+    console.log('test');
+}
+
+test();
+
+
+If you want to write code like editor in cmd then you can do this by using the command 
+.editor
+
+Now write your code 
+
+function test(){
+    console.log('test');
+}
+
+now press ctrl+d now lines will be terminated and you can print now
+test()
+
+.help command
+.break    Sometimes you get stuck, this gets you out
+.clear    Alias for .break
+.editor   Enter editor mode
+.exit     Exit the REPL
+.help     Print this help message
+.load     Load JS from a file into the REPL session
+.save     Save all evaluated commands in this REPL session to a file
+
+Question -> x=89
+console.log(x++);  // Error or 89? result 89 😁
+
+
+           D   O   N   E  😎
+
+👉 SQL Database is Left only first practice mongodb then once get fluent with that then start learning this mysql database.
+Now work on project or make fluency or work on javascript and react also keep practice node.js for fluency and interview questions keep in mind.
+Also see the advance code of packages how you will save image in database.
+
+
+👉 Security Tocken

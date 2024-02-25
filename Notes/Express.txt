@@ -1,0 +1,629 @@
+// 👅 Express js 👅
+
+Express is a node js web application framework that provides broad features for building web and mobile applications. It is used to build a single page, multipage, and hybrid web application. It's a layer built on the top of the Node js that helps manage servers and routes.
+
+
+// ⭐ Instalation of Express js
+
+// Learn bit theory about express
+// cmd -> npm install express
+
+// 🔥
+
+
+// ⭐  Create Pages 
+
+// const express = require('express');
+
+// const app = express();
+
+// app.get('',(req,resp) => {
+//     resp.send("Home Page");
+// })
+
+// app.get('/About',(req, resp) => {
+//     resp.send("About Page");
+// })
+
+// app.listen(5000);
+
+// 🔥
+
+
+// ⭐  Concept of passing value from urls
+
+// const express = require('express');
+
+// const app = express();
+
+// app.get('',(req,resp)=>{
+//     resp.send("Hello World, this is Home Page");
+//     console.log("Data sent by => ", req.query.name);
+// });
+
+ // req.query.name -> name is variable will pass from url
+ // Url hit -> http://localhost:5000/?name=%22Mohd%20Ameen%22
+    // Output in console -> Data sent by => "Mohd Ameen"
+    // %20 -> Used to give space
+    // %22 -> For double qoutes 
+    // You don't need of write %20 for giving space just simple give space
+    
+// 🔥
+
+
+
+// ⭐ Write html code in Node.js 
+
+// const express = require('express');
+// const app = express();
+
+// app.get('',(req,resp)=>{
+
+//     resp.send(`
+    
+//         <input type="text" placeholder="Enter user name" value="${req.query.name}"/>
+//         <button>Click Me</button>
+//         <a href="/">Go to About Page</a>
+    
+//     `);
+    
+// })
+
+// app.listen(5000);
+
+// 🔥
+
+
+// ⭐ Create JSON Data 
+
+// const express = require('express');
+// const app = express();
+
+// app.get('/api',(req,resp)=>{
+//     resp.send([
+//         {
+//             name: "Mohammad Ameen",
+//             email: 'md.ameen1080@gmail.com'
+//         },
+//         {
+//             name: "Renu Mondal",
+//             email: 'renu080@gmail.com'
+//         },
+//         {
+//             name: "Sumit Sagar",
+//             email: 'sumitsagar080@gmail.com'
+//         },
+//         {
+//             name: "Pradeep Kumar",
+//             email: 'pradeep80@gmail.com'
+//         },
+//         {
+//             name: "Amandeep Shamra",
+//             email: 'amandeep80@gmail.com'
+//         }
+//     ])
+// })
+
+// app.listen(9099);
+
+// 🔥
+
+
+
+// ⭐ Resolve individual page url send html request problem, list all your pages in public folder and access them without using resp.send line, just change url and hit Enter like below url
+// http://localhost:5000/about.html 
+
+// See -> public folder and your .html files in that folder
+
+// const express = require('express');
+// const path = require('path');
+// const app = express();
+
+// const publicPath = path.join(__dirname,'public');
+
+// app.use(express.static(publicPath));
+
+// app.listen(5000);
+
+
+// 🔥
+
+
+// ⭐ Remove extension from url, handle Error 404 page for invalid url search
+
+// By using below code you can access the public folder all pages by changing the url without writing extention.
+
+// const express = require('express');
+// const path = require('path');
+
+// const app = express();
+// const publicPath = path.join(__dirname, 'public')
+
+// app.get('',(_,resp)=>{
+//     resp.sendFile(`${publicPath}/index.html`)
+// })
+// app.get('/about',(_,resp)=>{
+//     resp.sendFile(`${publicPath}/about.html`)
+// })
+// app.get('/help',(_,resp)=>{
+//     resp.sendFile(`${publicPath}/help.html`)
+// })
+// app.get('*',(_,resp)=>{
+//     resp.sendFile(`${publicPath}/errorpath.html`)
+// })
+
+// app.listen(8110);
+
+
+
+// 🔥
+
+
+// ⭐ Template engine
+// It is use to create dynamic web pages, if we are fetching data from the api or any database then this page is known as dynamic web page.
+// To create dynamic webpages you need to install ejs package you can install other package but ejs in one the most famous package.
+// We need to create views folder in order to use any template engine, it is by default configuration so make sure to views folder.
+
+
+// Install ejs -> npm i ejs
+
+index.js file 
+
+// const express = require('express');
+// const View = require('express/lib/view');
+// const path = require('path');
+
+// const app = express();
+// const publicPath = path.join(__dirname,'public')
+
+// app.set('view engine', 'ejs');
+
+// app.get('',(_,resp)=>{
+//     resp.sendFile(`${publicPath}/index.html`)
+// });
+
+// app.get('/profile',(_,resp)=>{
+    
+//     const user={
+//         name: 'BankNifty',
+//         email: 'hsjsjsj@gmail.com',
+//         country: 'Nsnsnsn'
+//     }
+//     // profile.ejs page will render and user is the variable argument.
+//     // render(page, data, option)
+//     resp.render('profile', {user}); 
+// });
+
+// app.get('/help',(_,resp)=>{
+//     resp.sendFile(`${publicPath}/help.html`)
+// })
+// app.get('*',(_,resp)=>{
+//     resp.sendFile(`${publicPath}/errorpath.html`)
+// })
+
+// app.listen(8110);
+
+
+profile.ejs file in views folder below
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejs File Concept</title>
+</head>
+<body>
+
+    // include webpage in your document like below
+    <%- include('common/header'); %>
+    // see below name
+    <h1>Hello World, I'm <span style="color: pink;"><%= user.name %></span></h1>
+                       // see below email
+    <h1>My email id is <%= user.email %></h1>
+                        // see below country
+    <h1>My country is is <%= user.country %></h1>
+    
+</body>
+</html>
+
+common/header.ejs // common is folder inside views
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common navbar</title>
+
+    <style>
+        a{
+            background-color: red;
+            color: white;
+            margin: 0px 10px;
+            font-size: 40px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/">Login Page</a>
+    <a href="/loops">Loops Page</a>
+    <a href="/profile">Profile Page</a>
+    
+</body>
+</html>
+
+// 🔥
+
+// ⭐ Features of ejs
+
+👉 Tags
+<% 'Scriptlet' tag, for control-flow, no output
+<%_ ‘Whitespace Slurping’ Scriptlet tag, strips all whitespace before it
+<%= Outputs the value into the template (HTML escaped)
+<%- Outputs the unescaped value into the template
+<%# Comment tag, no execution, no output
+<%% Outputs a literal '<%'
+%> Plain ending tag
+-%> Trim-mode ('newline slurp') tag, trims following newline
+_%> ‘Whitespace Slurping’ ending tag, removes all whitespace after it
+
+👉 Options // Learn yourself
+
+👉 render("ejs file", data_or_variable, options)
+
+👉 include function
+
+include('ejs_file_path');
+
+eg. <%- include('common/header'); %> 
+
+// 🔥
+
+// ⭐ Dynamic Page
+
+// 1- How to make loop in ejs *forEach
+// 2- Make header file *include
+// 3- Show common header file 
+
+index.js
+const express = require('express');
+const path = require('path');
+
+const app = express();
+const publicPath=path.join(__dirname,'public')
+
+app.set('view engine', 'ejs');
+
+app.get('',(_,resp)=>{
+    resp.render('login')
+});
+
+app.get('/profile',(_,resp)=>{
+    
+    const user={
+        name: 'Mohammad Ameen',
+        email: 'md.ameen1080@gmail.com',
+        country: 'India',
+        skills: ['php','js','c++','node.js','java']
+        
+    }
+    resp.render('profile', {user});
+});
+
+
+app.get('/loops',(req,resp)=>{
+
+    const loop={
+        looping: 'Skills',
+        email: 'contactus@gmail.com',
+        country: 'USA',
+        skills: ['php','js','c++','node.js','java','servlet','jsp']
+        
+    }
+    resp.render('loops',{loop})
+
+})
+
+app.get('/help',(_,resp)=>{
+    resp.sendFile(`${publicPath}/help.html`)
+})
+
+app.get('*',(_,resp)=>{
+    resp.sendFile(`${publicPath}/errorpath.html`)
+})
+
+app.listen(8110);
+
+
+loops.js
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loops in Ejs</title>
+</head>
+<body>
+    
+    <%- include('common/header'); %>
+    
+    <h1>Concept : <%= loop.looping %></h1>
+    <h1>Concept : <%= loop.email %></h1>
+    <h1>Concept : <%= loop.country %></h1>
+
+    <ul>
+
+        <% loop.skills.forEach((item)=>{ %>
+            
+            <li><%= item %></li>
+
+        <% }) %>
+    </ul>
+
+</body>
+</html>
+
+
+common/header.ejs 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common navbar</title>
+
+    <style>
+        a{
+            background-color: red;
+            color: white;
+            margin: 0px 10px;
+            font-size: 40px;
+            padding: 5px 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <a href="/">Login Page</a>
+    <a href="/loops">Loops Page</a>
+    <a href="/profile">Profile Page</a>
+    
+</body>
+</html>
+
+
+login.ejs 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login page</title>
+</head>
+<body>
+    <%- include('common/header'); %>
+    <h1>This is login page</h1>
+</body>
+</html>
+
+rest html pages are present at public folder
+
+// 🔥
+
+
+// ⭐ Middleware
+
+// 1- What are Middlewares
+// 2- How to make a middleware
+// 3- Apply Midlleware on routes
+// 4- Types of Midlleware
+
+// Middleware -> These are functions which are only use with routes. With the help of middleware we can access req, resp and modify as per our convinence. if our app have 50 routes then we can use middleware and we will use one rounter whenever we want to use route as per our different conditions, 
+use() method -> use() method mounts or puts the specified middleware functions at the specified path. This middleware function will be executed only when the base of the requested path matches the defined path.
+
+http://localhost:1234/?age=12
+
+
+// Using application level middleware it is apply on all our routes of application. this midlleware applied on all the routes of application
+const express = require('express')
+const app = express();
+
+const reqFilter = (req,resp,next) => {
+   
+    console.log('reqFilter');
+
+    if(!req.query.age){
+        resp.send("Please provide your age")
+    }
+    else if(req.query.age<18){
+        resp.send("Sorry You are under aged 18 :(")
+    }
+    else{
+        next(); // This terminals loop
+    }
+
+}
+
+app.use(reqFilter); 
+
+http://localhost:1237/ameen?age=90 -> To access all the below routes age is required - Application level middleware
+
+app.get('/',(req,resp)=>{
+    resp.send('Welcome to Home Page')
+})
+
+app.get('/users',(req,resp)=>{
+    resp.send('Welcome to Home Page')
+})
+
+app.get('/ameen',(req,resp)=>{
+    resp.send('I am mohammad Ameen')
+})
+
+app.listen(1234);
+
+// 🔥
+
+
+
+// ⭐ Middleware Types
+// Middleware are also use for athentication perposes.
+
+// 1- Application-level middleware(we discussed in above code)
+// 2- Routes level middleware(if we have 50 routes and used middleware on 10 routes then this is RLM)
+// 3- Error-handling middleware
+// 4- Build-in midlleware
+// 5- Third-party middleware
+
+// 🔥
+
+
+// ⭐ Routes level Middleware 
+// 2 -> when we want to use middleware only on 10 routes in 50 routes then we use it.
+
+const express = require('express')
+const app = express();
+
+const reqFilter = (req,resp,next) => {
+   
+    console.log('reqFilter');
+
+    if(!req.query.age){
+        resp.send("Please provide your age")
+    }
+    else if(req.query.age<18){
+        resp.send("Sorry You are under aged 18 :(")
+    }
+    else{
+        next();
+    }
+
+}
+
+// No age is required here
+app.get('/',(req,resp)=>{
+    resp.send('Home')
+})
+
+// Without entering age you can access this route
+app.get('/users',(req,resp)=>{
+    resp.send('Iam users')
+})
+
+// You can apply middleware on a specific or any number of routes. age is required here
+app.get('/about',reqFilter,(req,resp)=>{
+    resp.send('About with middleware')
+})
+
+app.listen(9998);
+
+// 🔥
+
+
+
+// ⭐ External file middleware 
+
+index.js file
+// Importing middleware.js file
+const express = require('express')
+const app = express();
+const reqFilter = require('./middleware')
+
+app.get('/',(req,resp)=>{
+    resp.send('Welcome to Home Page')
+})
+
+// http://localhost:9799/users?age=78
+app.get('/users',reqFilter,(req,resp)=>{
+    resp.send('Users - Welcome to users Page')
+})
+
+// http://localhost:9799/about?age=78
+app.get('/about',reqFilter,(req,resp)=>{
+    resp.send('About - Welcome to about Page')
+})
+
+app.listen(9799);
+
+
+middleware.js file
+module.exports = reqFilter = (req,resp,next) => {
+   
+    console.log('reqFilter');
+
+    if(!req.query.age){
+        resp.send("Please provide your age")
+    }
+    else if(req.query.age<18){
+        resp.send("Sorry You are under aged 18 :(")
+    }
+    else{
+        next();
+    }
+
+}
+
+
+// Applying middleware on group of file
+// Where ever you have to use midlleware just add route. before get method
+
+middleware.js
+module.exports = reqFilter = (req,resp,next) => {
+   
+    console.log('reqFilter');
+
+    if(!req.query.age){
+        resp.send("Please provide your age")
+    }
+    else if(req.query.age<18){
+        resp.send("Sorry You are under aged 18 :(")
+    }
+    else{
+        next();
+    }
+
+}
+
+index.js
+const express = require('express')
+const app = express();
+const reqFilter = require('./middleware')
+const route = express.Router();
+
+
+route.use(reqFilter);
+
+app.get('/',(req,resp)=>{
+    resp.send('Welcome to Home Page')
+})
+
+app.get('/users',(req,resp)=>{
+    resp.send('Welcome to User Page')
+})
+
+route.get('/about',(req,resp)=>{
+    resp.send('Welcome to About Page')
+})
+
+// http://localhost:8889/contact?age=90
+route.get('/contact',(req,resp)=>{
+    resp.send('Welcome to Contact Page')
+})
+
+app.use('/',route) // This will apply midlleware only on route instead of whole app
+
+app.listen(8889);
+
+
+// 🔥

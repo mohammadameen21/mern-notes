@@ -1,0 +1,1126 @@
+👅 NODE JS 👅
+Make sure you should get output in output not in terminal please uncheck "run in terminal"
+
+⭐ How to import Modules
+const { fileLoader } = require("ejs");
+const data = require("./data");
+
+🔥
+
+⭐ Is node.js sync or async?
+Node.js is async because if we have three command and second command take 3 second and  third command takes 1 second then Node.js don't wait for 2nd command it will execute the 3rd command and 2nd simultaneously. this is why node.js is super fast.
+
+🔥
+
+
+⭐ Importing other file in this file or module
+
+You cannot use import in Nodejs but you can use that in Javascript
+
+📁 ExternalModule.js
+module.exports={
+    x:10,
+    y:20,
+}
+
+
+
+📁 File.js
+const app = require('./ExternalModule')
+
+console.log(app.x); Ouput -> 10
+console.log(app.y); Ouput -> 20
+console.log(app); Ouput -> {x: 10, y: 20, z:[Function: z]}
+
+🔥
+
+⭐ Exporting Function
+
+There are two methods
+
+👉 Mothod - 1
+
+📁 file_one.js
+module.exports={
+    y:function(){
+        return 100
+    },
+    z:function(){
+        let name = 'Mohammad Ameen';
+        console.log(name)
+    },
+    firstName : "Mohammad",
+    lastName : "Ameen",
+    gender : "Male",
+    age : [
+        1,2,3
+    ],
+    fullName: function(){
+        return this.firstName+" "+this.lastName;
+    },
+    currentTime : function(){
+
+        return new Date().toLocaleTimeString();
+    },
+    currentDate : function(){
+        return new Date().toLocaleDateString();
+    }
+}
+
+📁 file_two.js
+const call = require('./practice_two')
+
+console.log(call.y()); Output -> 100
+call.z();              Output -> Mohammad Ameen
+
+
+👉 Mothod - 2
+
+📁 Second.js File
+exports.mydate = function(){
+  return Date();
+}
+
+exports.mytime = function(){
+  return new Date().toDateString();
+}
+
+exports.age = 89;
+
+exports.name = "Mohammad Ameen";
+
+
+📁 Main.js File
+const date = require('./secondfile');
+
+console.log(date.mydate());
+console.log(date.mytime());
+console.log(date.age);
+
+🔥
+
+⭐ Github
+
+👇 Concept  
+Que -> How can we commit our code and push to the github from the visual studio code?
+Ans -> just run -> npm init command and this will ask for repository provide repository and just enter.
+👆
+
+👇 Concept  
+Que -> How can i ignore node_modules folder on pushing to git?
+Ans -> just create .gitignore file inside project folder directory and write
+/node_modules
+👆
+
+🔥
+
+⭐ Filter function in Javascript
+
+const arr = [2,3,4,3,4];
+
+let result = arr.filter((item) =>{
+    return 3==item
+})
+
+console.log(result)
+
+Output -> [3,3]
+
+🔥
+
+⭐ Modules in Node.js
+
+👇
+Core Modules 
+We get already written code which we can use in our projects, core modules are of two type
+eg. console, buffer, fs, http
+
+a -> Global Modules
+     eg -> console
+b -> Non-Global Modules
+     Needs to be import or in other words import class create its object and use there operations
+     eg. fs, colors, http etc.
+👆
+
+
+👇 Custom module 
+Create your own module
+
+📁 myfirstmodule.js file
+exports.myDateTime = function () {
+    return Date();
+};
+
+📁 Main.js File 
+var http = require('http');
+var dt = require('./myfirstmodule');
+
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write("The date and time are currently: " + dt.myDateTime());
+  res.end();
+}).listen(8080);
+
+🔥
+
+  THEORY KNOWLEDGE FOR INTERVIEWS
+  
+📑http -> The Built-in HTTP Module
+Node.js has a built-in module called HTTP, which allows Node.js to transfer data over the Hyper Text Transfer Protocol (HTTP).
+To include the HTTP module, use the require() method:
+var http = require('http');
+📑
+
+📑 Add an HTTP Header
+If the response from the HTTP server is supposed to be displayed as HTML, you should include an HTTP header with the correct content type:
+Syntax -> res.writeHead(200, {'Content-Type': 'text/html'});
+📑
+
+📑createServer -> Node.js as a Web Server
+The HTTP module can create an HTTP server that listens to server ports and gives a response back to the client.
+Use the createServer() method to create an HTTP server:
+
+Example
+Get your own Node.js Server
+var http = require('http');
+
+//create a server object:
+http.createServer(function (req, res) {
+  res.write('Hello World!'); //write a response to the client
+  res.end();                 //end the response
+}).listen(8080);             //the server object listens on port 8080
+
+The function passed into the http.createServer() method, will be executed when someone tries to access the computer on port 8080.
+📑
+
+
+📑 req and resp argument
+Read the Query String
+The function passed into the http.createServer() has a req argument that represents the request from the client, as an object (http.IncomingMessage object).
+
+This object has a property called "url" which holds the part of the url that comes after the domain name:
+
+eg.
+var http = require('http');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write(req.url);
+  res.end();
+}).listen(8080);
+
+Added helloworld in Url after port number
+http://localhost:8787/helloworld
+
+result -> /helloworld
+📑
+
+📑Split the Query String
+There are built-in modules to easily split the query string into readable parts, such as the URL module.
+
+Example
+Split the query string into readable parts:
+
+var http = require('http');
+var url = require('url');
+
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  var q = url.parse(req.url, true).query;
+  var txt = q.year + " " + q.month;
+  res.end(txt);
+}).listen(8080);
+Save the code above in a file called "demo_querystring.js" and initiate the file:
+
+Initiate demo_querystring.js:
+
+C:\Users\Your Name>node demo_querystring.js
+The address:
+
+http://localhost:8080/?year=2017&month=July
+
+Will produce this result:
+
+2017 July
+📑
+
+👆
+
+
+Note -> Package and module are not different they are same just name are alternative.
+
+🔥
+
+⭐ fs Module 
+Common use for the File System module:
+
+a) Read files -> 
+The fs.readFile() method is used to read files on your computer.
+
+Example -> Get your own Node.js Server
+var http = require('http');
+var fs = require('fs');
+http.createServer(function (req, res) {
+
+  // If you are in any folder then 'FolderName/demofile1.html'
+  fs.readFile('demofile1.html', function(err, data) {
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(data);
+    return res.end();
+  });
+}).listen(8080);
+
+
+b) Create files -> 
+
+The File System module has 3 methods for creating new files:
+
+1) fs.appendFile() -> The fs.appendFile() method appends specified content to a file. If the file does not exist, the file will be created:
+
+Example
+
+var fs = require('fs');
+
+fs.appendFile('mynewfile1.txt', 'Hello content!', function (err) {
+  if (err) throw err;
+  console.log('Saved!');
+});
+
+2) fs.open() -> The fs.open() method takes a "flag" as the second argument, if the flag is "w" for "writing", the specified file is opened for writing. If the file does not exist, an empty file is created:
+
+Example
+Create a new, empty file using the open() method:
+
+var fs = require('fs');
+
+fs.open('mynewfile2.txt', 'w', function (err, file) {
+  if (err) throw err;
+  console.log('Saved!');
+});
+
+
+3) fs.writeFile() -> The fs.writeFile() method replaces the specified file content if it exists. If the file does not exist, a new file, containing the specified content, will be created:
+
+Example
+Create a new file using the writeFile() method:
+
+var fs = require('fs');
+
+fs.writeFile('mynewfile3.txt', 'Hello content!', function (err) {
+  if (err) throw err;
+  console.log('Saved!');
+});
+
+
+c) Update files ->
+
+The File System module has two methods for updating files:
+
+fs.appendFile()
+fs.writeFile()
+
+The fs.appendFile() method appends the specified content at the end of the specified file:
+
+Example
+Append "This is my text." to the end of the file "mynewfile1.txt":
+
+var fs = require('fs');
+
+fs.appendFile('mynewfile1.txt', ' This is my text.', function (err) {
+  if (err) throw err;
+  console.log('Updated!');
+});
+
+The fs.writeFile() method replaces the specified file and content:
+
+Example
+Replace the content of the file "mynewfile3.txt":
+
+var fs = require('fs');
+
+fs.writeFile('mynewfile3.txt', 'This is my text', function (err) {
+  if (err) throw err;
+  console.log('Replaced!');
+});
+
+
+d) Delete files -> 
+
+To delete a file with the File System module,  use the fs.unlink() method.
+The fs.unlink() method deletes the specified file:
+
+Example
+Delete "mynewfile2.txt":
+
+var fs = require('fs');
+
+fs.unlink('mynewfile2.txt', function (err) {
+  if (err) throw err;
+  console.log('File deleted!');
+});
+
+
+e) Rename files ->
+
+To rename a file with the File System module,  use the fs.rename() method.
+The fs.rename() method renames the specified file:
+
+Example
+Rename "mynewfile1.txt" to "myrenamedfile.txt":
+
+var fs = require('fs');
+
+fs.rename('mynewfile1.txt', 'myrenamedfile.txt', function (err) {
+  if (err) throw err;
+  console.log('File Renamed!');
+});
+
+
+
+f) fs Module Other operations
+
+writeFileSync('file.txt', 'Content') -> This is used for the replace content of the file is file exist otherwise new file will be created.
+
+const fs = require('fs')
+fs.writeFileSync("Hello.txt","Code step by step");
+
+
+⭐ writeFileSync v/s writeFile
+
+fs.writeFileSync( file, data, options )
+fs.writeFile( file, data, options, callback)
+
+The Asynchronous function has a callback function as the last parameter which indicates the completion of the asynchronous function.
+
+The ‘fs’ module implements the File I/O operation. Methods in the fs module can be synchronous as well as asynchronous. 
+Developers prefer asynchronous methods over synchronous methods as they never block a program during its execution, whereas the later does. Blocking the main thread is "malpractice" in Node.js, thus synchronous functions should only be used for "debugging" or when no other options are available.
+
+The fs.writeFileSync() is a synchronous method & creates a new file if the specified file does not exist while fs.writeFile() is an asynchronous method.
+
+
+⭐ Print directories
+
+console.log("->>",__dirname); // Gives Path till file folder
+->> c:\Users\under\OneDrive\Desktop\Mohd Ameen\MeanStack
+
+console.log("->>", __filename); // Gives file Path
+->> c:\Users\under\OneDrive\Desktop\Mohd Ameen\MeanStack\fileName.js  
+
+
+🔥
+
+
+
+
+⭐ http Module
+
+const http = require('http');
+
+http.createServer((req, resp) =>{
+
+    resp.write("Hello this is Mohammad Ameen");
+    resp.end();
+
+}).listen(9088);
+
+
+     or You can pass function to createServer make sure!
+
+const http = require('http');
+const dataControl = (req,resp) => {
+    resp.write("<h1>Hello, this is Developer Mohammad Ameen</h1>");
+    resp.end();
+}
+
+http.createServer(dataControl).listen(4500);
+🔥
+
+⭐ All about package
+npm -> Node Package Manager, NPM is a package manager for Node.js packages or modules. www.npmjs.com hosts thousands of free packages to download and use. The NPM program is installed on your computer when you install Node.js. NPM is already ready to run on your computer!
+
+package.json file -> This file keeps record of our Node project i.e what are the package have been use in our project, The package. json file is the heart of any Node project. It records important metadata about a project which is required before publishing to NPM, and also defines functional attributes of a project that npm uses to install dependencies, run scripts, and identify the entry point to our package.
+
+npm init
+This utility will walk you through creating a package.json file.
+It only covers the most common items, and tries to guess sensible defaults.
+
+See `npm help init` for definitive documentation on these fields
+and exactly what they do.
+
+save it as a dependency in the package.json file.
+
+Press ^C at any time to quit.
+package name: (meanstack)
+
+Important Note -> You can directly run npm i colors command and install the colors package and use there funtions you don't need to install init npm or create package.json file it will works perfectly without that.
+
+👇 How to install packages
+Color package, chalk package etc.
+npm install colors or npm i colors
+const colors = require('colors');
+console.log("package.json".bgGreen);
+👆
+
+
+👇
+Nodemon package
+npm i nodemon -g -> This command will install nodemon globally means we dont need to install nodemon for indivisual project. if any error then long click on cammand prompt and click run as adminitrator.
+
+npm i nodemon -> This will install in our project only.
+This package works as live server in terminal used for quickly update code and show output in terminal it saves time.
+console.log("Nodemon package");
+console.log("Code step by step");
+console.log(10+100);
+👆
+
+
+👇 Interview question 
+Que -> If we share our project with someone how he will identify what are the package have been use in this project?
+Ans -> He can check the package.json file dependencies object to identify what are the packages been use in this project and he don't use to install packages one by one he need to just rum in terminal npm install command by given this command all the packages get add in our project which are mention in package.json file.
+npm install
+
+Now we don't run .js file like node ./app.js we will use nodemon ./app.js for continueously update the terminal.
+
+👆
+
+👇 Concept  
+Que -> If we install only two packages i.e colors and simple-code-logger then why we are getting more than two package in node_modules folder.
+Ans -> Because the packages which we install are dependent on other packages as well they are need of there other package as well to complete their task thats why they went install.
+
+👆
+
+
+👇 Concept  
+Que -> What package-lock.json file is?
+Ans -> It has more brief information about the package which we install in our project, in package.json file we only see the package name and version but in package-lock.json file we have more information about the individual packages which are installed.
+
+👆
+
+👇 Concept  
+Que -> Is node.js multitheaded or single-threaded?
+Ans -> Node.js is single-threaded because it can process only one command at a time we cannot run multiple command at the same time.
+
+
+Single thread: Node JS Platform doesn’t follow the Multi-Threaded Request/Response Stateless Model. It follows the Single-Threaded with Event Loop Model. Node JS Processing model mainly inspired by JavaScript Event-based model with JavaScript callback mechanism. Because of which Node.js can handle more concurrent client requests with ease. The event loop is the heart of the Node.js processing model as shown below diagram
+
+👆
+
+👇 Concept  
+Que -> What happend if node_module folder gets delete?
+Ans -> No problem we record of our package name in our package.json file we can install one by one although use the short cut i.e npm install which will install all the packages which are using in our node project.
+
+👆
+
+👇 Concept  
+Que -> Should we push node_module folder on github ?
+Ans -> We shouldn't because of too large size file hence make use of gitignore file /node_module this will push everything on github except the node_module folder
+
+👆
+
+👇 Concept  
+When we installing any package from terminal then it's dependency gets add in the package.json file.
+
+👆
+
+
+
+
+// 🔥
+
+
+// ⭐ HTTP response status codes
+// HTTP response status codes indicate whether a specific HTTP request has been successfully completed. Responses are grouped in five classes:
+
+// Informational responses (100–199)
+// Successful responses (200–299)
+// Redirection messages (300–399)
+// Client error responses (400–499)
+// Server error responses (500–599)
+
+// 🔥
+
+
+// ⭐ is Node js Asynchronous?
+    Yes, don't wait for other function if they need some time to finish their task
+// 🔥
+
+
+
+
+
+⭐ Make a simple API
+
+const http = require('http');
+
+http.createServer((req,resp)=>{
+    resp.writeHead(200,{'Content-Type':'application\json'});
+    resp.write(JSON.stringify({name:'Mohammad Ameen', email:'md.ameen1080@gmail.com'}));
+    resp.end();
+}).listen(6800);
+
+👇 Simple api fetching data from other file i.e data.js
+const http = require('http');
+const data = require('./data');
+
+http.createServer((req,resp)=>{
+    resp.writeHead(200,{'Content-Type':'application\json'});
+    resp.write(JSON.stringify(data));
+    resp.end();
+}).listen(5000);
+
+
+JSON.stringify() method -> The JSON.stringify() static method converts a JavaScript value to a JSON string, optionally replacing values if a replacer function is specified or optionally including only the specified properties if a replacer array is specified.
+A common use of JSON is to exchange data to/from a web server.
+When sending data to a web server, the data has to be a string.
+Convert a JavaScript object into a string with JSON.stringify().
+👆
+
+👅 data.js file
+const data=[
+  {name:'Mohammad Ameen',email:'md.ameen1080@gmail.com'},
+  {name:'Amandeep Sharrma',email:'amandeep909@gmail.com'},
+  {name:'Pradeep Kumar',email:',md.pradeepktmwala@gmail.com'},
+  {name:'Renu',email:'renumondal902@gmail.com'},
+  {name:'Sumit Sagar',email:'md.memedeveloper@gmail.com'}
+]
+
+module.exports=data;
+
+🔥
+
+
+⭐ How can we make api like NewsApi
+
+Write Below code
+const http = require('http');
+
+
+
+http.createServer((req, resp) => {
+
+    resp.writeHead(200, {'Content-Type':'application\json'});
+    resp.write(JSON.stringify({name:'Mohd Ameen', email:'mohdameen1080@gmail.com', college:{name: 'Rbmi', affiliated:'Aktu', rollnumber:'2003190100002',course:'BTech', branch:'Computer Science and Engineering', section: 'A'}, personaldetails:{address:'Koharapeer Police Station', landmark:'Faiyyaz Building',fathersname:'Naeem Ahmad',mothername:'Rani',occupation:'Business', religion:'Islam', history:{previousstatus:'Poor', currentStatus:'Middle Class', dream:'Desired Job Roll',here_you_put_above_data_var}}}));
+    resp.end();
+
+}).listen(7665);
+
+
+
+JSON output on localhost:7665
+
+
+20221020135646
+http://localhost:7665/
+
+{
+  "name": "Mohd Ameen",
+  "email": "mohdameen1080@gmail.com",
+  "college": {
+    "name": "Rbmi",
+    "affiliated": "Aktu",
+    "rollnumber": "2003190100002",
+    "course": "BTech",
+    "branch": "Computer Science and Engineering",
+    "section": "A"
+  },
+  "personaldetails": {
+    "address": "Koharapeer Police Station",
+    "landmark": "Faiyyaz Building",
+    "fathersname": "Naeem Ahmad",
+    "mothername": "Rani",
+    "occupation": "Business",
+    "religion": "Islam",
+    "history": {
+      "previousstatus": "Poor",
+      "currentStatus": "Middle Class",
+      "dream": "Desired Job Roll"
+    }
+  }
+}
+
+🔥
+⭐
+
+🔥
+
+
+⭐ arvg -> This works as a index in command terminal for printing any value, and the indexing will be start from the "file.js", node won't be including in the index. eg. Terminal -> node index.js 'Hello World'
+
+console.log(process.argv)
+Output -> [
+    'C:\\Users\\under\\Training\\node.exe',
+    'c:\\Users\\under\\OneDrive\\Desktop\\Mohd Ameen\\MeanStack\\practice.js'
+]
+
+console.log(process.argv[5]);
+
+Terminal -> node index.js 
+Output -> undefined
+
+console.log(process.argv[2]);
+
+Terminal -> node ./index.js hello
+Output -> PS C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission> 
+hello
+
+console.log(process.argv[2])
+Terminal -> node ./index.js hi hello
+Output -> PS C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission> 
+[
+  'C:\\Users\\under\\Training\\node.exe',
+  'C:\\Users\\under\\OneDrive\\Desktop\\Mohd Ameen\\Node Revission\\index.js',
+  'hi'
+]
+
+console.log(process.argv[3])
+Note -> Node matter how many words you wrote but the argv[val], val should bounded
+Terminal -> node ./index.js i love you
+Output -> PS C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission> 
+love
+
+PS C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission> node ./index.js hi hello i love you
+hello
+PS C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission>  node ./index.js hi hello i love you
+i
+PS C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission>  node ./index.js hi hello i love you
+C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission\index.js
+PS C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission>  node ./index.js hi hello i love you
+i
+PS C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission>  node ./index.js hi hello i love you
+love
+🔥
+
+⭐ Input from command line
+
+👇 Taking input
+const fs = require('fs');
+
+const input = process.argv;
+fs.writeFileSync(input[2],input[3]);
+
+In terminal give command                                          
+1st      -> index.js
+2nd      -> apple.txt
+3rd      -> 'I am color of red fruite'
+
+C:\Users\under\OneDrive\Desktop\Mohd Ameen\Node Revission> node index.js apple.txt 'I am color of red fruite'
+👆
+
+👇 Deletion and Creation of file from terminal system
+
+Delete cammand -> node node.js add orange.txt
+Create cammand -> node node.js remove orange.txt
+
+const fs = require('fs');
+const input = process.argv;
+
+if(input[2]=='add'){
+    fs.writeFileSync(input[3],input[4]);
+}else if(input[2]=='remove'){
+    fs.unlinkSync(input[3]);
+}else{
+    console.log('Invalid input...');
+}
+
+👆
+
+
+👇 Sync vs Async
+
+unlink vs unlinkSync || writeFile vs writeFileSync
+
+Delete a file in Node.js Synchronously. This is helpful if statements next to the delete operation depend on the file you delete. unlinkSync() function makes sure that file is deleted(if it exists) before the execution of subsequent statements.
+
+👆
+
+🔥
+
+
+⭐ Path Module
+
+The Path module provides a way of working with directories and file paths.
+
+Syntax
+The syntax for including the Path module in your application:
+
+var path = require('path');
+
+Path Properties and Methods
+Method	        Description
+
+👉 basename()	->    Returns the last part of a path
+        var path = require('path');
+        var filename = path.basename('/Users/Refsnes/demo_path.js');
+        console.log(filename);
+        Output -> demo_path.js
+
+
+👉 dirname()	->  Returns the directories of a path
+        var path = require('path');
+        //Return the directries:
+        var directories = path.dirname('/Users/Refsnes/demo_path.js');
+        console.log(directories);
+        Output -> /Users/Refsnes
+
+👉 extname()	  ->  Returns the file extension of a path
+        var path = require('path');
+        //Return the extension:
+        var ext = path.extname('/Users/Refsnes/demo_path.js');
+        console.log(ext);
+        Output -> .js
+
+👉 format()	->    Formats a path object into a path string
+            var path = require('path');
+            //Create a path object:
+            var obj = { dir: 'C:\\Users\\Refsnes', base: 'demo_path.js' }
+            //Format the path object into a path string:
+            var p = path.format(obj);
+            console.log(p);
+            Output -> C:\Users\Refsnes\demo_path.js
+
+👉 isAbsolute() -> 	Returns true if a path is an absolute path, otherwise false
+            var path = require('path');
+
+            console.log(path.isAbsolute('/test/demo_path.js')); //true
+            console.log(path.isAbsolute('test/demo_path.js')); //false
+            console.log(path.isAbsolute('C:\\test\\demo_path.js')); //true
+
+👉 join()	  ->      Joins the specified paths into one
+            var path = require('path');
+
+            var x = path.join('Users', 'Refsnes', 'demo_path.js');
+
+            console.log(x);
+            Output -> Users\Refsnes\demo_path.js
+
+👉 normalize()	->    Normalizes the specified path
+            var path = require('path');
+
+            var x = path.normalize('Users/Refsnes/../Jackson');
+
+            console.log(x);
+            Output -> Users\Jackson
+
+🔥
+
+⭐ Show file list
+
+👇 Creating files
+
+const { dir } = require('console');
+const fs = require('fs');
+const path = require('path'); // This will give directory path
+const dirPath = path.join(__dirname,'files');
+
+for(i=0; i<5; i++){
+
+  fs.writeFileSync(dirPath+"/hello"+i+".txt","a simple test file");
+
+}
+
+👆
+
+
+👇 Reading file names present in files folder
+const { dir } = require('console');
+const fs = require('fs');
+const path= require('path');
+const dirPath = path.join(__dirname,'files');
+
+fs.readdir(dirPath,(err,files)=>{
+    
+    files.forEach((item)=>{
+        console.log("file name is ", item);
+    })
+})
+
+👆
+
+
+🔥
+
+
+⭐ Crud with File System
+
+👇 Make File
+
+const fs = require('fs');
+const path = require('path');
+const dirPath = path.join(__dirname,'Crud');
+const filePath = `${dirPath}/apple.txt`;
+
+fs.writeFileSync(filePath, 'This is a simple text file');
+
+👆
+
+👇 Read File
+
+const fs = require('fs');
+const path = require('path');
+const dirPath = path.join(__dirname,'Crud');
+const filePath = `${dirPath}/apple.txt`;
+
+fs.readFile(filePath,'utf8',(err,item)=>{
+    console.log(item);
+})
+
+👆
+
+👇 Update File
+
+const fs = require('fs');
+const path = require('path');
+const dirPath = path.join(__dirname,'Crud');
+const filePath = `${dirPath}/apple.txt`;
+
+fs.appendFile(filePath,' and file name is apple.txt',(err)=>{
+    if(!err) console.log("file is updated");
+});
+
+👆
+
+👇 Rename File
+
+const fs = require('fs');
+const path = require('path');
+const dirPath = path.join(__dirname,'Crud');
+const filePath = `${dirPath}/apple.txt`;
+
+fs.rename(filePath, `${dirPath}/fruit.txt`,(err)=>{
+    if(!err) console.log("File name is updated")
+})
+
+
+👆
+
+👇 Delete File
+
+const fs = require('fs');
+const path = require('path');
+const dirPath = path.join(__dirname,'Crud');
+const filePath = `${dirPath}/apple.txt`;
+
+fs.unlinkSync(`${dirPath}/fruit.txt`);
+
+👆
+
+🔥
+
+
+⭐ Asynchronous
+
+👇 What is asynchronous?
+In asynchronous second task won't wait to finish first task.
+
+console.log("Start exe...");
+
+setInterval(()=>{
+console.log("Login exe...");
+},2000);
+
+console.log("Complete exe");
+
+👆 
+
+
+👇 Promises 
+The Promise object represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+
+let a=20;
+let b=0;
+
+let waitingData = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+        b=30;
+        resolve(b);
+    },2000)
+})
+
+Twenty will be print after 2sec
+waitingData.then((data)=>{ // (data) coming from (resolve)
+    b = data;
+    console.log(a+b);
+})
+
+
+This is how we can handle the waiting period, result will be produce once setTimeOut get stop and update the value
+
+ By using reject we can handle the errors 
+
+👆
+
+👇 Interview question
+
+console.log("Starting up") // 1st
+
+setTimeout(()=>{
+    console.log("2 second log") // 4th
+}, 2000)
+
+setTimeout(()=>{
+    console.log("2 second log") // 3rd
+}, 0)
+
+console.log("Finishing up") // 2nd
+
+👆
+
+🔥
+
+
+🔥
+
+
+⭐ URL Module
+
+👇 
+
+The Built-in URL Module
+
+The URL module splits up a web address into readable parts.
+
+var url = require('url');
+
+Parse an address with the url.parse() method, and it will return a URL object with each part of the address as properties:
+
+Example - Get your own Node.js Server
+Split a web address into readable parts:
+
+var url = require('url');
+var adr = 'http://localhost:8080/default.htm?year=2017&month=february';
+var q = url.parse(adr, true);
+
+console.log(q.host); //returns 'localhost:8080'
+console.log(q.pathname); //returns '/default.htm'
+console.log(q.search); //returns '?year=2017&month=february'
+
+var qdata = q.query; //returns an object: { year: 2017, month: 'february' }
+console.log(qdata.month); //returns 'february'
+
+Node.js File Server
+Now we know how to parse the query string, and in the previous chapter we learned how to make Node.js behave as a file server. Let us combine the two, and serve the file requested by the client.
+
+Create two html files and save them in the same folder as your node.js files.
+
+summer.html
+
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Summer</h1>
+<p>I love the sun!</p>
+</body>
+</html>
+
+winter.html
+
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Winter</h1>
+<p>I love the snow!</p>
+</body>
+</html>
+
+
+Create a Node.js file that opens the requested file and returns the content to the client. If anything goes wrong, throw a 404 error:
+
+demo_fileserver.js:
+
+var http = require('http');
+var url = require('url');
+var fs = require('fs');
+
+http.createServer(function (req, res) {
+  var q = url.parse(req.url, true);
+  var filename = "." + q.pathname;
+  fs.readFile(filename, function(err, data) {
+    if (err) {
+      res.writeHead(404, {'Content-Type': 'text/html'});
+      return res.end("404 Not Found");
+    } 
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write(data);
+    return res.end();
+  });
+}).listen(8080);
+
+Remember to initiate the file:
+
+Initiate demo_fileserver.js:
+
+C:\Users\Your Name>node demo_fileserver.js
+If you have followed the same steps on your computer, you should see two different results when opening these two addresses:
+
+http://localhost:8080/summer.html
+
+Will produce this result:
+
+Summer
+I love the sun!
+
+http://localhost:8080/winter.html
+
+👆
+
+
+👇 What is NPM?
+
+NPM is a package manager for Node.js packages, or modules if you like.
+
+www.npmjs.com hosts thousands of free packages to download and use.
+
+The NPM program is installed on your computer when you install Node.js
+
+NPM is already ready to run on your computer!
+
+What is a Package?
+A package in Node.js contains all the files you need for a module.
+
+Modules are JavaScript libraries you can include in your project.
+
+Download a Package?
+Downloading a package is very easy.
+
+Open the command line interface and tell NPM to download the package you want.
+
+I want to download a package called "upper-case":
+
+Download "upper-case":
+
+C:\Users\Your Name>npm install upper-case
+Now you have downloaded and installed your first package!
+
+NPM creates a folder named "node_modules", where the package will be placed. All packages you install in the future will be placed in this folder.
+
+My project now has a folder structure like this:
+
+C:\Users\My Name\node_modules\upper-case
+
+
+Using a Package?
+Once the package is installed, it is ready to use.
+
+Include the "upper-case" package the same way you include any other module:
+
+var uc = require('upper-case');
+Create a Node.js file that will convert the output "Hello World!" into upper-case letters:
+
+ExampleGet your own Node.js Server
+var http = require('http');
+var uc = require('upper-case');
+http.createServer(function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write(uc.upperCase("Hello World!"));
+  res.end();
+}).listen(8080);
+
+Save the code above in a file called "demo_uppercase.js", and initiate the file:
+
+Initiate demo_uppercase:
+
+C:\Users\Your Name>node demo_uppercase.js
+If you have followed the same steps on your computer, you will see the same result as the example: http://localhost:8080
+
+👆
+
+🔥
